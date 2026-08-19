@@ -29,6 +29,11 @@ export const metadata: Metadata = {
   },
   description:
     "Book vetted buses and cars for any move, anywhere in Nigeria. Corporate rentals, event logistics and interstate transport with professional pilots.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

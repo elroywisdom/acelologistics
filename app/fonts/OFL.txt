@@ -1,0 +1,4 @@
+Cal Sans is licensed under the SIL Open Font License, Version 1.1.
+Copyright 2021 The Cal Sans Project Authors (https://github.com/calcom/font)
+Source: https://github.com/calcom/font (distributed here via @fontsource/cal-sans)
+Full license text: http://scripts.sil.org/OFL

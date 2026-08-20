@@ -44,7 +44,9 @@ export function localBusinessJsonLd() {
     areaServed: "NG",
     sameAs: [
       "https://wa.me/2348103115430",
+      "https://x.com/acelologistics",
       "https://www.instagram.com/acelo_logistics/",
+      "https://www.tiktok.com/@acelologistics",
       "https://www.linkedin.com/company/acelo-logistics",
     ],
   };

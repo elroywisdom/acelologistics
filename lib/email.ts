@@ -74,7 +74,9 @@ function getEmailImageBase64(filename: string): string {
 
 const EMAIL_SOCIALS = [
   { label: "WhatsApp", href: "https://wa.me/2348103115430", icon: "social-whatsapp.png" },
+  { label: "X", href: "https://x.com/acelologistics", icon: "social-x.png" },
   { label: "Instagram", href: "https://www.instagram.com/acelo_logistics/", icon: "social-instagram.png" },
+  { label: "TikTok", href: "https://www.tiktok.com/@acelologistics", icon: "social-tiktok.png" },
   { label: "LinkedIn", href: "https://www.linkedin.com/company/acelo-logistics", icon: "social-linkedin.png" },
 ];
 

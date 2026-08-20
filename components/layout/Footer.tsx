@@ -2,7 +2,9 @@ import Link from "next/link";
 import {
   InstagramIcon,
   LinkedInIcon,
+  TikTokIcon,
   WhatsAppIcon,
+  XIcon,
 } from "@/components/ui/SocialIcons";
 
 // Rebuilt 2026-08-19 against the acelo-seo-strategist skill's planned URL
@@ -66,7 +68,9 @@ const columns = [
 
 const socials = [
   { label: "WhatsApp", Icon: WhatsAppIcon, href: "https://wa.me/2348103115430" },
+  { label: "X", Icon: XIcon, href: "https://x.com/acelologistics" },
   { label: "Instagram", Icon: InstagramIcon, href: "https://www.instagram.com/acelo_logistics/" },
+  { label: "TikTok", Icon: TikTokIcon, href: "https://www.tiktok.com/@acelologistics" },
   { label: "LinkedIn", Icon: LinkedInIcon, href: "https://www.linkedin.com/company/acelo-logistics" },
 ];
 

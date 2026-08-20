@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
 
 // Cal Sans — primary typeface, single weight, self-hosted per kickoff doc §4.
 const calSans = localFont({
@@ -42,7 +43,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${calSans.variable} ${geistBold.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <FloatingWhatsApp />
+      </body>
     </html>
   );
 }

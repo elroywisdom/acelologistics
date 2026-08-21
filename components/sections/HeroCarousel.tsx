@@ -37,8 +37,8 @@ const HERO_SLIDES = [
     subtitle: "16 Seater Group Transit",
     src: "/images/fleet/toyota-hiace-bus.png",
     alt: "Toyota Hiace Bus",
-    width: 580,
-    height: 384,
+    width: 2820,
+    height: 1587,
     fit: "object-contain" as const,
   },
   {

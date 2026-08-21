@@ -119,7 +119,7 @@ export const fleetVehicles: FleetVehicle[] = [
     description:
       "The classic Toyota Hiace model. Comfortable and highly efficient for cross-city travel and medium team transit.",
     price: "₦130,000.00",
-    image: { src: "/images/fleet/toyota-hiace-bus.png", width: 580, height: 384 },
+    image: { src: "/images/fleet/toyota-hiace-bus.png", width: 2820, height: 1587 },
   },
   {
     id: "dyna-truck",

@@ -60,7 +60,7 @@ export const vehicleTypeBand = {
 export type FleetVehicle = {
   id: string;
   name: string;
-  seats: string;
+  seats?: string;
   description: string;
   price: string;
   image: { src: string; width: number; height: number };
@@ -97,7 +97,7 @@ export const fleetVehicles: FleetVehicle[] = [
   {
     id: "sienna",
     name: "Mini Van",
-    seats: "13 Seater",
+    seats: "6 Seater",
     description:
       "Comfortable, fuel-efficient rides for city trips and small-group travel.",
     price: "₦130,000.00",
@@ -133,7 +133,6 @@ export const fleetVehicles: FleetVehicle[] = [
   {
     id: "hino-truck",
     name: "Hino Truck",
-    seats: "27 Seater",
     description:
       "Powerful, durable, and built for heavy-duty performance. The ideal choice for freight hauling, logistics, and commercial fleet operations.",
     price: "₦100,000.00",
@@ -142,7 +141,7 @@ export const fleetVehicles: FleetVehicle[] = [
   {
     id: "cng-brt",
     name: "CNG BRT Bus",
-    seats: "16 Seater",
+    seats: "42 Seater",
     description:
       "Eco-friendly, efficient, and built for mass transit. Clean, reliable performance for urban public transportation and rapid transit corridors.",
     price: "₦150,000.00",

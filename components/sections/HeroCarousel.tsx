@@ -43,7 +43,7 @@ const HERO_SLIDES = [
   },
   {
     name: "Sienna Mini Van",
-    subtitle: "13 Seater Comfort Shuttle",
+    subtitle: "6 Seater Comfort Shuttle",
     src: "/images/fleet/toyota-sienna-mini-van.png",
     alt: "Toyota Sienna Mini Van",
     width: 628,

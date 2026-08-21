@@ -69,7 +69,9 @@ export default async function VehicleDetailPage({
 
           <div className="flex flex-col gap-2">
             <h1 className="text-display-l font-normal text-ink">{vehicle.name}</h1>
-            <p className="text-[15px] text-text-muted">{vehicle.seats} vehicle category</p>
+            <p className="text-[15px] text-text-muted">
+              {vehicle.seats ? `${vehicle.seats} vehicle category` : "Logistics & Cargo Transport"}
+            </p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_420px] lg:items-start">
@@ -109,15 +111,17 @@ export default async function VehicleDetailPage({
                 </p>
               </div>
 
-              <div className="flex flex-col gap-4">
-                <h2 className="text-heading-2 font-normal text-ink">Amenities</h2>
-                <div className="flex flex-wrap gap-3">
-                  <span className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-3 text-[14px] text-ink">
-                    <UserIcon className="h-4 w-4 text-text-muted" />
-                    {vehicle.seats}
-                  </span>
+              {vehicle.seats && (
+                <div className="flex flex-col gap-4">
+                  <h2 className="text-heading-2 font-normal text-ink">Amenities</h2>
+                  <div className="flex flex-wrap gap-3">
+                    <span className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-3 text-[14px] text-ink">
+                      <UserIcon className="h-4 w-4 text-text-muted" />
+                      {vehicle.seats}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             <div className="lg:sticky lg:top-[100px]">

@@ -25,10 +25,12 @@ export function VehicleCard({ vehicle }: { vehicle: FleetVehicle }) {
           className="object-contain"
         />
       </div>
-      <span className="inline-flex w-fit items-center gap-1.5 rounded-pill bg-tint-blue-100 px-2.5 py-1 text-caption font-normal text-primary">
-        <UserIcon className="h-3 w-3" />
-        {vehicle.seats}
-      </span>
+      {vehicle.seats && (
+        <span className="inline-flex w-fit items-center gap-1.5 rounded-pill bg-tint-blue-100 px-2.5 py-1 text-caption font-normal text-primary">
+          <UserIcon className="h-3 w-3" />
+          {vehicle.seats}
+        </span>
+      )}
       <div className="flex flex-col gap-2">
         <h3 className="text-heading-3 font-normal text-ink">{vehicle.name}</h3>
         <p className="line-clamp-2 text-[13px] leading-[1.4] text-text-muted">

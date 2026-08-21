@@ -115,7 +115,7 @@ export const fleetVehicles: FleetVehicle[] = [
   {
     id: "hiace",
     name: "Hiace",
-    seats: "13 Seater",
+    seats: "16 Seater",
     description:
       "The classic Toyota Hiace model. Comfortable and highly efficient for cross-city travel and medium team transit.",
     price: "₦130,000.00",
@@ -124,7 +124,6 @@ export const fleetVehicles: FleetVehicle[] = [
   {
     id: "dyna-truck",
     name: "Dyna Truck",
-    seats: "16 Seater",
     description:
       "Rugged, reliable, and built for heavy-duty tasks. Delivers powerful performance for logistics, haulage, and commercial transport.",
     price: "₦80,000.00",

@@ -143,7 +143,7 @@ export const fleetVehicles: FleetVehicle[] = [
     seats: "42 Seater",
     description:
       "Eco-friendly, efficient, and built for mass transit. Clean, reliable performance for urban public transportation and rapid transit corridors.",
-    price: "₦150,000.00",
+    price: "₦350,000.00",
     image: { src: "/images/fleet/cng-brt-bus.png", width: 740, height: 420 },
   },
 ];

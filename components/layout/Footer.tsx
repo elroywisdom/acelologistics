@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { address } from "@/content/site";
 import {
   InstagramIcon,
   LinkedInIcon,
@@ -10,13 +11,19 @@ import {
 // Rebuilt 2026-08-19 against the acelo-seo-strategist skill's planned URL
 // IA and the acelo-section-layout skill's mandated footer shape ("Solutions,
 // Products/Partners, Policies, Resources" — the previous "Company" column
-// was never one of those four). Every link below traces to one of three
-// things, and is commented when it isn't the first:
-//   1. a real page in the planned IA (built or not — the site isn't
-//      deployed yet, so linking ahead to a planned-but-unbuilt route is
-//      the intended incremental-build pattern, not a bug);
-//   2. a real, already-built anchor on Home, used as an explicit interim
-//      target for a real Acelo service line that has no planned page yet;
+// was never one of those four).
+//
+// Updated again once the remaining nine pages were built: every solution
+// link below that used to be an inactive placeholder (`href: null`) now
+// points at its real route. What is left inactive is genuinely unbuilt —
+// the two policy pages, which need legal copy Acelo has to supply, not
+// markup.
+//
+// Every link traces to one of three things, and is commented when it
+// isn't the first:
+//   1. a real, built page in the IA;
+//   2. a real, already-built anchor on Home or a solution page, used as
+//      an explicit interim target for a service line with no page yet;
 //   3. a reasonable /resources/ extension for the Policies column, which
 //      the SEO skill's IA list doesn't cover at all — flagged in the
 //      project doc as a gap between the two skills to reconcile later.
@@ -27,41 +34,55 @@ import {
 // them) — none of these were ever part of the planned IA or backed by
 // real Acelo content. "Bus Branding & Advertising" (a real service line
 // per the brand brief) was also dropped rather than pointed somewhere
-// wrong — unlike Cargo & Logistics, Home has no section that represents
-// it even loosely, so there's no honest interim target for it yet.
+// wrong — no page represents it even loosely, so there's no honest
+// target for it yet.
+//
+// "Cargo & Logistics" was removed on El-Roy's instruction (2026-09-07).
+// It had no page of its own and pointed at the rental page's fleet grid
+// as an interim target, on the grounds that the grid carries the Dyna and
+// Hino truck classes. Every other link in this column goes to a real page
+// about that service; this one sent a reader looking for haulage to a
+// vehicle-hire grid. If cargo becomes a page, add it back pointing at the
+// page — not at an anchor that only half answers the question.
 const columns = [
   {
     heading: "Solutions",
     links: [
-      { label: "Passenger Transport", href: "/#fleet", active: true },
-      { label: "Church & Event Transport", href: null, active: false },
-      { label: "School Transport", href: null, active: false },
-      { label: "Group Travel", href: null, active: false },
-      { label: "Cargo & Logistics", href: "/#fleet", active: true },
+      { label: "Vehicle Rental", href: "/solutions/rental", active: true },
+      { label: "Church & Event Transport", href: "/solutions/church-events", active: true },
+      { label: "School Transport", href: "/solutions/schools", active: true },
+      { label: "Group Travel", href: "/solutions/group-travel", active: true },
     ],
   },
   {
-    heading: "Products/Partners",
+    // Displayed as "Partners", not "Products/Partners". This is the same
+    // column the section-layout doc calls "Products/Partners" — the
+    // grouping is unchanged, only the visible label. "PRODUCTS/PARTNERS"
+    // uppercase renders as a single 143px unbreakable token (no break
+    // opportunity at the slash) inside a 116px grid column at a 320px
+    // viewport, which pushed the whole document 3px wide and gave every
+    // page on the site a horizontal scrollbar on a small phone.
+    // "Partners" also describes the four links beneath it more accurately.
+    heading: "Partners",
     links: [
-      { label: "Fleet Partnership", href: "https://wa.me/2348103115430", active: true },
-      { label: "Travel & Tour Partners", href: null, active: false },
-      { label: "Hotels", href: null, active: false },
-      { label: "Real Estate", href: null, active: false },
+      { label: "Fleet Partnership", href: "/partners/fleet", active: true },
+      { label: "Travel & Tour Partners", href: "/solutions/travel-tour-partners", active: true },
+      { label: "Hotels", href: "/solutions/hotels", active: true },
+      { label: "Real Estate", href: "/solutions/real-estate", active: true },
     ],
   },
   {
     heading: "Resources",
     links: [
-      { label: "About Us", href: null, active: false },
       { label: "FAQs", href: "/#faq", active: true },
-      { label: "Contact", href: "https://wa.me/2348103115430", active: true },
+      { label: "Contact", href: "/resources/contact", active: true },
     ],
   },
   {
     heading: "Policies",
     links: [
-      { label: "Privacy Policy", href: null, active: false },
-      { label: "Terms of Service", href: null, active: false },
+      { label: "Privacy Policy", href: "/resources/privacy-policy", active: true },
+      { label: "Terms of Service", href: "/resources/terms-of-service", active: true },
     ],
   },
 ];
@@ -91,9 +112,27 @@ export function Footer() {
               vetted vehicles and professional pilots, dispatched from hubs
               across the country.
             </p>
+            {/* The section-layout doc specifies "logo + one-line company
+                descriptor + address" for this column, and the address was
+                missing. It reads from `content/site.ts` alongside the
+                contact page and the LocalBusiness schema — the SEO doc's
+                local-SEO section needs all three identical. */}
+            <address className="not-italic text-[14px] leading-[1.6] text-white/60">
+              {address.street}
+              <br />
+              {address.locality} {address.postalCode}, {address.region}
+            </address>
           </div>
+          {/* Column width is `w-full lg:w-[120px]`, not a flat `w-[120px]`.
+              Below `lg` these columns sit in a 2-up grid; two fixed 120px
+              columns plus the 40px gap need 280px, but a 320px viewport
+              only leaves 272px inside the footer's px-6 padding, so the
+              footer pushed the whole document 3px wide and every page on
+              the site scrolled sideways on a small phone. The fixed width
+              still applies at `lg`, where the columns are laid out as a
+              flex row rather than a grid. */}
           {columns.map((col) => (
-            <div key={col.heading} className="flex w-[120px] flex-col gap-4 text-[14px]">
+            <div key={col.heading} className="flex w-full flex-col gap-4 text-[14px] lg:w-[120px]">
               <span className="font-bold uppercase text-white">
                 {col.heading}
               </span>

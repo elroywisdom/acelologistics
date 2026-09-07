@@ -143,7 +143,7 @@ export const fleetVehicles: FleetVehicle[] = [
     seats: "42 Seater",
     description:
       "Eco-friendly, efficient, and built for mass transit. Clean, reliable performance for urban public transportation and rapid transit corridors.",
-    price: "₦350,000.00",
+    price: "₦250,000.00",
     image: { src: "/images/fleet/cng-brt-bus.png", width: 740, height: 420 },
   },
 ];
@@ -175,8 +175,14 @@ export const whyAcelo = {
     {
       icon: "grid" as const,
       title: "Scalable Fleet",
+      // Was "Up to 15+ units coordinated simultaneously for large-scale
+      // events." Removed 2026-09-07 on El-Roy's instruction: Acelo has run
+      // church programmes larger than that, so publishing the figure
+      // advertised a ceiling the company had already cleared. This is the
+      // one string on Home changed away from Figma node 70:211 — the
+      // frame's own copy is now out of date, not the code.
       description:
-        "Up to 15+ units coordinated simultaneously for large-scale events.",
+        "Multi-unit convoys coordinated as one dispatch, scaled to the size of the event.",
     },
     {
       icon: "target" as const,

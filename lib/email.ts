@@ -5,6 +5,7 @@ import {
   formatDate,
   formatTime,
 } from "@/lib/booking";
+import type { PartnerApplication } from "@/lib/partner-application";
 import { siteUrl } from "@/lib/seo";
 
 /** Resend — El-Roy's chosen transactional email provider (2026-08-19).
@@ -427,3 +428,142 @@ export async function sendTeamNotificationEmail(
   }
 }
 
+
+/* ---------------------------------------------------------------------
+ * Fleet partner applications (`app/api/partner-applications/route.ts`).
+ *
+ * Reuses this file's shared plumbing — the Resend client and its
+ * graceful no-op when unconfigured, `getEmailImageBase64`, and
+ * `emailSocialFooterHtml` — and adds only the two templates. Same
+ * best-effort contract as the booking sends: a failure here never fails
+ * the application, because the WhatsApp deep link is always returned to
+ * the applicant as a fallback route to a human.
+ * ------------------------------------------------------------------- */
+
+function applicationSummaryHtml(application: PartnerApplication) {
+  const row = (label: string, value: string) =>
+    `<tr><td style="padding:4px 12px 4px 0;color:#718096;white-space:nowrap;">${label}</td><td>${value}</td></tr>`;
+
+  return `
+    <table style="font-family: -apple-system, sans-serif; font-size:14px; color:#0f1420; border-collapse:collapse;">
+      ${row("Vehicle", `${application.vehicleCount}x ${application.vehicleClass}`)}
+      ${row("Make / model", application.makeModel)}
+      ${row("Year", application.year)}
+      ${row("Condition", application.condition)}
+      ${row("Papers", application.papers)}
+      ${row("Driver", application.driverArrangement)}
+      ${row("Availability", application.availability)}
+      ${row("Based in", application.city)}
+    </table>
+  `;
+}
+
+export function partnerApplicantEmailHtml(
+  application: PartnerApplication,
+  whatsappLink: string,
+) {
+  const logo = getEmailImageBase64("acelo-logo-email.png");
+
+  return `
+  <div style="background:#f7f9fc;padding:32px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+    <div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;">
+      <img src="${logo}" alt="Acelo Logistics" width="120" style="display:block;border:0;margin-bottom:24px;" />
+      <h1 style="margin:0 0 12px;font-size:22px;color:#0f1420;font-weight:600;">
+        We have your partnership application
+      </h1>
+      <p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#4a5568;">
+        Thanks ${application.firstName} — your vehicle details are with the Acelo
+        fleet team. The next step is vetting: we will confirm the vehicle's
+        papers and arrange an inspection, and we may ask you for photographs
+        of the documents on WhatsApp.
+      </p>
+      ${applicationSummaryHtml(application)}
+      <a href="${whatsappLink}"
+         style="display:inline-block;margin-top:24px;background:#ffd600;color:#1a202c;text-decoration:none;padding:14px 24px;border-radius:999px;font-size:14px;font-weight:600;">
+        Continue on WhatsApp
+      </a>
+      <p style="margin:20px 0 0;font-size:13px;line-height:1.6;color:#718096;">
+        Sending that message puts your application straight in front of
+        dispatch, which is the fastest way to get vetting moving.
+      </p>
+      ${emailSocialFooterHtml()}
+    </div>
+  </div>`;
+}
+
+export function partnerTeamEmailHtml(
+  application: PartnerApplication,
+  whatsappLink: string,
+) {
+  const notes = application.notes
+    ? `<p style="margin:16px 0 0;font-size:14px;line-height:1.6;color:#0f1420;"><strong>Notes:</strong> ${application.notes}</p>`
+    : "";
+
+  return `
+  <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:24px;">
+    <h1 style="margin:0 0 4px;font-size:18px;color:#0f1420;">New fleet partner application</h1>
+    <p style="margin:0 0 20px;font-size:14px;color:#718096;">
+      ${application.firstName} ${application.lastName} &middot; ${application.city}
+    </p>
+    ${applicationSummaryHtml(application)}
+    <table style="font-family:-apple-system,sans-serif;font-size:14px;color:#0f1420;border-collapse:collapse;margin-top:16px;">
+      <tr><td style="padding:4px 12px 4px 0;color:#718096;">Phone</td><td><a href="tel:${application.phone}" style="color:#1a56db;">${application.phone}</a></td></tr>
+      <tr><td style="padding:4px 12px 4px 0;color:#718096;">Email</td><td><a href="mailto:${application.email}" style="color:#1a56db;">${application.email}</a></td></tr>
+    </table>
+    ${notes}
+    <p style="margin:24px 0 0;font-size:14px;">
+      <a href="${whatsappLink}" style="color:#1a56db;">Open this application as a WhatsApp message</a>
+    </p>
+  </div>`;
+}
+
+export async function sendPartnerApplicantEmail(
+  application: PartnerApplication,
+  whatsappLink: string,
+): Promise<SendResult> {
+  if (!resend) {
+    console.warn("[email] RESEND_API_KEY not set — skipping partner applicant email.", {
+      to: application.email,
+    });
+    return { sent: false, error: "RESEND_API_KEY not configured" };
+  }
+
+  try {
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: application.email,
+      subject: "Your Acelo fleet partner application",
+      html: partnerApplicantEmailHtml(application, whatsappLink),
+    });
+    return { sent: true };
+  } catch (error) {
+    console.error("[email] Partner applicant email failed:", error);
+    return { sent: false, error: String(error) };
+  }
+}
+
+export async function sendPartnerTeamEmail(
+  application: PartnerApplication,
+  whatsappLink: string,
+): Promise<SendResult> {
+  if (!resend || !TEAM_EMAIL) {
+    console.warn("[email] Resend or ACELO_TEAM_EMAIL not set — skipping partner team email.", {
+      applicant: application.email,
+    });
+    return { sent: false, error: "Resend or ACELO_TEAM_EMAIL not configured" };
+  }
+
+  try {
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: TEAM_EMAIL,
+      replyTo: application.email,
+      subject: `Fleet partner application — ${application.vehicleCount}x ${application.vehicleClass} (${application.city})`,
+      html: partnerTeamEmailHtml(application, whatsappLink),
+    });
+    return { sent: true };
+  } catch (error) {
+    console.error("[email] Partner team email failed:", error);
+    return { sent: false, error: String(error) };
+  }
+}

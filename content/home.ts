@@ -140,7 +140,7 @@ export const fleetVehicles: FleetVehicle[] = [
   {
     id: "cng-brt",
     name: "CNG BRT Bus",
-    seats: "42 Seater",
+    seats: "56 Seater",
     description:
       "Eco-friendly, efficient, and built for mass transit. Clean, reliable performance for urban public transportation and rapid transit corridors.",
     price: "₦250,000.00",
